@@ -47,7 +47,11 @@ class ShapefileDrawer():
 		for index, shapefile in enumerate(self.sh_list):
 			shape_type = shapefile.shapes()[0].shapeType
 			# look up the how to draw the shapefile in self.draw_dict based on the shapeType
-			drawing_function = self.drawing_dict[shape_type]
+			try:
+				drawing_function = self.drawing_dict[shape_type]
+			except KeyError as e:
+				print("Shape type of value {} not described in self.drawing_dict".format(shape_type))
+				raise
 			# loop through shapefile modified for drawing and draw it
 			for shape in self.modify(shapefile):
 				drawing_function(shape, self.colors[index])
